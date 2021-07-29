@@ -1,0 +1,8 @@
+.popup__form-submit_disabled,
+.popup__form-submit_disabled:hover {
+  background-color: transparent;
+  border: 2px solid black;
+  color: black;
+  opacity: .2;
+  cursor: not-allowed;
+}

@@ -1,0 +1,13 @@
+.auth__submit {
+  margin-top: 216px;
+  padding: 14px 0;
+  width: 100%;
+  border-radius: 2px;
+  border: none;
+
+  font-family: var(--font-inter);
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+  color: #000000;
+}

@@ -1,0 +1,11 @@
+.place__delete-button {
+  position: absolute;
+  padding: 0;
+  top: 18px;
+  right: 15px;
+  border: none;
+  width: 18px;
+  height: 19px;
+  background: transparent url("../../../images/icon-trash.svg");
+  background-size: cover;
+}

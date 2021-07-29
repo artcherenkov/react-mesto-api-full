@@ -1,0 +1,6 @@
+.auth__input-wrapper {
+}
+
+.auth__input-wrapper:not(:last-of-type) {
+  margin-bottom: 30px;
+}

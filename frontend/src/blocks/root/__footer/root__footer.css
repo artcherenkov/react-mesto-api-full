@@ -1,0 +1,11 @@
+.root__footer {
+  margin: 66px auto 0;
+  padding-bottom: 56px;
+}
+
+@media screen and (max-width: 550px) {
+  .root__footer {
+    margin: 48px auto 0;
+    padding-bottom: 36px;
+  }
+}

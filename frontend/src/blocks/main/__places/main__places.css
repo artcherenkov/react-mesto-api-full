@@ -1,0 +1,9 @@
+.main__places {
+  margin-top: 50px;
+}
+
+@media screen and (max-width: 550px) {
+  .main__places {
+    margin-top: 36px;
+  }
+}

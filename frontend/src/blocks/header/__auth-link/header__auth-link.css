@@ -1,0 +1,10 @@
+.header__auth-link {
+  display: block;
+  margin-left: auto;
+  font-family: var(--font-inter);
+  font-size: 18px;
+  line-height: 22px;
+  text-decoration: none;
+
+  color: #ffffff;
+}

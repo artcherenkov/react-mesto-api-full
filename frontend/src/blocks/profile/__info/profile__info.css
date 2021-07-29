@@ -1,0 +1,7 @@
+.profile__info {
+  display: grid;
+  grid-template-columns: fit-content(380px) min-content;
+  grid-auto-rows: min-content;
+  row-gap: 7px;
+  column-gap: 10px;
+}

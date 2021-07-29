@@ -1,0 +1,10 @@
+.places__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(282px, 1fr));
+  grid-row-gap: 20px;
+  grid-column-gap: 17px;
+}

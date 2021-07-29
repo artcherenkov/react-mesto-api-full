@@ -1,0 +1,11 @@
+.header__logout {
+  font-family: var(--font-inter);
+  font-size: 18px;
+  line-height: 22px;
+  color: #a9a9a9;
+  text-decoration: none;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}

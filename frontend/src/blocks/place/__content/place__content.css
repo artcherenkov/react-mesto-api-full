@@ -1,0 +1,6 @@
+.place__content {
+  background-color: white;
+  padding: 25px 20px;
+  display: flex;
+  align-items: center;
+}

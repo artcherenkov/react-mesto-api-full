@@ -7,6 +7,7 @@ const { errors } = require('celebrate');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 require('dotenv').config();
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const auth = require('./middlewares/auth');
 const error = require('./middlewares/error');
@@ -36,12 +37,15 @@ app.use(cookieParser());
 app.use(cors());
 app.use(limiter);
 app.use(helmet());
+app.use(requestLogger); // подключаем логгер запросов
 
 app.use('/users', auth, usersRouter);
 app.use('/cards', auth, cardsRouter);
 
 app.post('/signin', validateAuth, login);
 app.post('/signup', validateAuth, createUser);
+
+app.use(errorLogger);
 
 app.use(() => {
   throw new NotFoundError('Ресурс не найден');

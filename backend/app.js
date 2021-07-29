@@ -9,15 +9,9 @@ const helmet = require('helmet');
 require('dotenv').config();
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const auth = require('./middlewares/auth');
 const error = require('./middlewares/error');
-
-const usersRouter = require('./routes/users');
-const cardsRouter = require('./routes/cards');
+const router = require('./routes');
 const NotFoundError = require('./errors/not-found');
-const { validateAuth } = require('./joi-schemas/user');
-
-const { login, createUser } = require('./controllers/users');
 
 const PORT = process.env.PORT || 3000;
 
@@ -39,11 +33,7 @@ app.use(limiter);
 app.use(helmet());
 app.use(requestLogger); // подключаем логгер запросов
 
-app.use('/users', auth, usersRouter);
-app.use('/cards', auth, cardsRouter);
-
-app.post('/signin', validateAuth, login);
-app.post('/signup', validateAuth, createUser);
+app.use('/api', router);
 
 app.use(errorLogger);
 

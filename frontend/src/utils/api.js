@@ -5,12 +5,14 @@ class Api {
 
   getUserInfo() {
     return fetch(`${this._options.baseUrl}/users/me`, {
+      credentials: 'include',
       headers: this._options.headers,
     }).then(this._getResponseData);
   }
 
   editUserInfo(newUserInfo) {
     return fetch(`${this._options.baseUrl}/users/me`, {
+      credentials: 'include',
       method: "PATCH",
       headers: this._options.headers,
       body: JSON.stringify(newUserInfo),
@@ -19,6 +21,7 @@ class Api {
 
   changeAvatar(avatarUrl) {
     return fetch(`${this._options.baseUrl}/users/me/avatar`, {
+      credentials: 'include',
       method: "PATCH",
       headers: this._options.headers,
       body: JSON.stringify({ avatar: avatarUrl }),
@@ -27,12 +30,14 @@ class Api {
 
   getInitialCards() {
     return fetch(`${this._options.baseUrl}/cards`, {
+      credentials: 'include',
       headers: this._options.headers,
     }).then(this._getResponseData);
   }
 
   changeLikeStatus(cardId, shouldSetLike) {
     return fetch(`${this._options.baseUrl}/cards/likes/${cardId}`, {
+      credentials: 'include',
       method: shouldSetLike ? "put" : "delete",
       headers: this._options.headers,
     }).then(this._getResponseData);
@@ -40,6 +45,7 @@ class Api {
 
   postCard(card) {
     return fetch(`${this._options.baseUrl}/cards/`, {
+      credentials: 'include',
       method: "post",
       headers: this._options.headers,
       body: JSON.stringify(card),
@@ -48,6 +54,7 @@ class Api {
 
   deleteCard(cardId) {
     return fetch(`${this._options.baseUrl}/cards/${cardId}`, {
+      credentials: 'include',
       method: "delete",
       headers: this._options.headers,
     }).then(this._getResponseData);
@@ -64,9 +71,8 @@ class Api {
 
 // Инициализация API
 const api = new Api({
-  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-23",
+  baseUrl: "http://localhost:3031",
   headers: {
-    authorization: "5a89c943-0743-4e83-b516-7727da7c758b",
     "Content-Type": "application/json",
   },
 });

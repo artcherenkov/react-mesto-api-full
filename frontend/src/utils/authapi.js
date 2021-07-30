@@ -6,6 +6,7 @@ class AuthApi {
   register(email, password) {
     return fetch(`${this._options.baseUrl}/signup`, {
       method: "POST",
+      credentials: 'include',
       headers: this._options.headers,
       body: JSON.stringify({ email, password }),
     }).then(this._getResponseData);
@@ -14,14 +15,16 @@ class AuthApi {
   authorize(email, password) {
     return fetch(`${this._options.baseUrl}/signin`, {
       method: "POST",
+      credentials: 'include',
       headers: this._options.headers,
       body: JSON.stringify({ email, password }),
     }).then(this._getResponseData);
   }
 
-  checkToken(token) {
+  checkToken() {
     return fetch(`${this._options.baseUrl}/users/me`, {
-      headers: { ...this._options.headers, Authorization: `Bearer ${token}` },
+      credentials: 'include',
+      headers: this._options.headers,
     }).then(this._getResponseData);
   }
 
@@ -36,7 +39,7 @@ class AuthApi {
 
 // Инициализация API
 const api = new AuthApi({
-  baseUrl: "https://auth.nomoreparties.co",
+  baseUrl: "http://localhost:3031",
   headers: {
     "Content-Type": "application/json",
   },

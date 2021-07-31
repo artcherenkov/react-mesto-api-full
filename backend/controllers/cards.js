@@ -18,7 +18,7 @@ module.exports.deleteCardById = (req, res, next) => {
       if (!c) {
         throw new NotFoundError('Карточка с указанным _id не найдена');
       }
-      if (c.owner !== req.user._id) {
+      if (String(c.owner) !== req.user._id) {
         throw new ForbiddenError('Запрещено удалять чужие карточки');
       }
     })
@@ -61,7 +61,7 @@ module.exports.putLike = (req, res, next) => {
       if (!c) {
         throw new NotFoundError('Карточка не найдена.');
       }
-      res.status(Status.SUCCESS).send({ message: 'Лайк успешно поставлен' });
+      res.status(Status.SUCCESS).send({ data: c });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -83,7 +83,7 @@ module.exports.deleteLike = (req, res, next) => {
       if (!c) {
         throw new NotFoundError('Карточка не найдена.');
       }
-      res.status(Status.SUCCESS).send({ message: 'Лайк успешно удалён' });
+      res.status(Status.SUCCESS).send({ data: c });
     })
     .catch((err) => {
       if (err.name === 'CastError') {

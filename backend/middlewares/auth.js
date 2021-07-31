@@ -9,6 +9,7 @@ const handleAuthError = (next) => {
 
 module.exports = (req, res, next) => {
   const { jwt: token } = req.cookies;
+  console.log(`token: ${token}`);
 
   if (!token) {
     handleAuthError(next);
@@ -18,6 +19,8 @@ module.exports = (req, res, next) => {
 
   try {
     payload = jwt.verify(token, JWT_SECRET);
+    console.log('payload:');
+    console.log(payload);
   } catch (err) {
     handleAuthError(next);
   }

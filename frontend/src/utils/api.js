@@ -5,14 +5,14 @@ class Api {
 
   getUserInfo() {
     return fetch(`${this._options.baseUrl}/users/me`, {
-      credentials: 'include',
+      credentials: "include",
       headers: this._options.headers,
     }).then(this._getResponseData);
   }
 
   editUserInfo(newUserInfo) {
     return fetch(`${this._options.baseUrl}/users/me`, {
-      credentials: 'include',
+      credentials: "include",
       method: "PATCH",
       headers: this._options.headers,
       body: JSON.stringify(newUserInfo),
@@ -21,7 +21,7 @@ class Api {
 
   changeAvatar(avatarUrl) {
     return fetch(`${this._options.baseUrl}/users/me/avatar`, {
-      credentials: 'include',
+      credentials: "include",
       method: "PATCH",
       headers: this._options.headers,
       body: JSON.stringify({ avatar: avatarUrl }),
@@ -30,14 +30,14 @@ class Api {
 
   getInitialCards() {
     return fetch(`${this._options.baseUrl}/cards`, {
-      credentials: 'include',
+      credentials: "include",
       headers: this._options.headers,
     }).then(this._getResponseData);
   }
 
   changeLikeStatus(cardId, shouldSetLike) {
-    return fetch(`${this._options.baseUrl}/cards/likes/${cardId}`, {
-      credentials: 'include',
+    return fetch(`${this._options.baseUrl}/cards/${cardId}/likes`, {
+      credentials: "include",
       method: shouldSetLike ? "put" : "delete",
       headers: this._options.headers,
     }).then(this._getResponseData);
@@ -45,7 +45,7 @@ class Api {
 
   postCard(card) {
     return fetch(`${this._options.baseUrl}/cards/`, {
-      credentials: 'include',
+      credentials: "include",
       method: "post",
       headers: this._options.headers,
       body: JSON.stringify(card),
@@ -54,8 +54,16 @@ class Api {
 
   deleteCard(cardId) {
     return fetch(`${this._options.baseUrl}/cards/${cardId}`, {
-      credentials: 'include',
+      credentials: "include",
       method: "delete",
+      headers: this._options.headers,
+    }).then(this._getResponseData);
+  }
+
+  logout() {
+    return fetch(`${this._options.baseUrl}/logout`, {
+      credentials: "include",
+      method: "POST",
       headers: this._options.headers,
     }).then(this._getResponseData);
   }

@@ -119,3 +119,7 @@ module.exports.createUser = (req, res, next) => {
       }
     });
 };
+module.exports.logout = (req, res) => {
+  res.clearCookie('jwt');
+  res.status(201).send({ message: 'Вы успешно вышли из своего аккауунта.' });
+};

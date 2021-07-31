@@ -37,22 +37,20 @@ function App() {
   const [cards, setCards] = useState(null);
 
   useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    if (!jwt) return;
-
-    authApi
-      .checkToken(jwt)
-      .then(({ data }) => handleLogin(data.email, jwt))
+    api
+      .getUserInfo()
+      .then(handleLogin)
       .catch((err) => console.log(err));
   }, []);
+
   useEffect(() => {
     if (!loggedIn) return;
 
     setIsLoading(true);
     Promise.all([api.getInitialCards(), api.getUserInfo()])
       .then(([cards, currentUser]) => {
-        setCards(cards);
-        setCurrentUser(currentUser);
+        setCards(cards.data);
+        setCurrentUser(currentUser.data);
       })
       .catch((err) => console.log(err))
       .finally(() => setIsLoading(false));
@@ -66,46 +64,44 @@ function App() {
   };
 
   const authorize = (email, password) => {
-    authApi
-      .authorize(email, password)
-      .then(({ token }) => handleLogin(email, token))
-      .catch(handleError);
+    authApi.authorize(email, password).then(handleLogin).catch(handleError);
   };
   const register = (email, password) => {
     authApi
       .register(email, password)
-      .then(() => {
+      .then(({ data }) => {
+        setEmail(data.email);
         handleRegister();
         handleSuccess();
       })
       .catch(handleError);
   };
+  const logout = () => {
+    api.logout().then(handleSignOut).catch(handleError);
+  };
 
   const handleRegister = () => {
     history.push("/sign-in");
   };
-  const handleLogin = (email, token) => {
-    localStorage.setItem("jwt", token);
-    setEmail(email);
+  const handleLogin = () => {
     setLoggedIn(true);
     history.push("/");
   };
   const handleSignOut = () => {
-    localStorage.removeItem("jwt");
     setEmail("");
     setLoggedIn(false);
     history.push("/sign-in");
   };
 
   const handleCardLike = (card) => () => {
-    const isLiked = card.likes.some((l) => l._id === currentUser._id);
+    const isLiked = card.likes.some((l) => l === currentUser._id);
     api
       .changeLikeStatus(card._id, !isLiked)
-      .then((newCard) =>
+      .then(({ data }) => {
         setCards((prevState) =>
-          prevState.map((c) => (c._id === card._id ? newCard : c))
-        )
-      )
+          prevState.map((c) => (c._id === card._id ? data : c))
+        );
+      })
       .catch((err) => console.log(err));
   };
   const handleCardDelete = (card) => () => {
@@ -135,8 +131,8 @@ function App() {
   const handleProfileChange = (newUserInfo) => {
     api
       .editUserInfo(newUserInfo)
-      .then((userInfo) => {
-        setCurrentUser(userInfo);
+      .then(({ data }) => {
+        setCurrentUser(data);
         setIsEditProfilePopupOpen(false);
       })
       .catch((err) => console.log(err));
@@ -144,8 +140,8 @@ function App() {
   const handleAvatarChange = (avatarUrl) => {
     return api
       .changeAvatar(avatarUrl)
-      .then((userInfo) => {
-        setCurrentUser(userInfo);
+      .then(({ data }) => {
+        setCurrentUser(data);
         setIsEditAvatarPopupOpen(false);
       })
       .catch((err) => console.log(err));
@@ -153,8 +149,8 @@ function App() {
   const handleAddPlaceSubmit = (newPlace) => {
     return api
       .postCard(newPlace)
-      .then((newPlace) => {
-        setCards((prevState) => [newPlace, ...prevState]);
+      .then(({ data }) => {
+        setCards((prevState) => [data, ...prevState]);
         setIsAddPlacePopupOpen(false);
       })
       .catch((err) => console.log(err));
@@ -162,7 +158,7 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <Header loggedIn={loggedIn} email={email} onSignOut={handleSignOut} />
+      <Header loggedIn={loggedIn} email={email} onSignOut={logout} />
       <Switch>
         <Route path="/sign-in">
           <Login onLogin={authorize} />

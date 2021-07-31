@@ -3,6 +3,8 @@ const ALLOWED_CORS = [
   'https://praktikum.tk',
   'http://praktikum.tk',
   'http://localhost:3000',
+  'https://ypmesto.ru',
+  'http://ypmesto.ru',
 ];
 
 module.exports = (req, res, next) => {

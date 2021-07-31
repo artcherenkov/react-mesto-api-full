@@ -79,7 +79,7 @@ class Api {
 
 // Инициализация API
 const api = new Api({
-  baseUrl: "http://localhost:3031",
+  baseUrl: "https://api.ypmesto.ru",
   headers: {
     "Content-Type": "application/json",
   },

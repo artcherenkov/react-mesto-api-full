@@ -11,7 +11,7 @@ const Main = (props) => {
     onCardClick,
     cards,
     onCardLike,
-    onCardDelete,
+    onCardDeleteClick,
     isLoading,
   } = props;
 
@@ -61,7 +61,7 @@ const Main = (props) => {
                 card={card}
                 onCardClick={onCardClick(card)}
                 onCardLike={onCardLike(card)}
-                onCardDelete={onCardDelete(card)}
+                onCardDeleteClick={onCardDeleteClick(card._id)}
               />
             ))}
           </ul>

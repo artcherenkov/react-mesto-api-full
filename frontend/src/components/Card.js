@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 const Card = (props) => {
-  const { card, onCardClick, onCardLike, onCardDelete } = props;
+  const { card, onCardClick, onCardLike, onCardDeleteClick } = props;
   const currentUser = useContext(CurrentUserContext);
 
   const isOwn = card.owner === currentUser._id;
@@ -15,7 +15,7 @@ const Card = (props) => {
       {isOwn && (
         <button
           className="place__delete-button button"
-          onClick={onCardDelete}
+          onClick={onCardDeleteClick}
         />
       )}
       <img

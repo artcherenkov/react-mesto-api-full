@@ -4,8 +4,6 @@ import { Route, Switch, useHistory } from "react-router-dom";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import { Popup } from "../utils/const";
-import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import api from "../utils/api";
 import authApi from "../utils/authapi";
@@ -14,6 +12,7 @@ import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import ProtectedRoute from "./ProtectedRoute";
+import SubmitDeletionPopup from "./SubmitDeletionPopup";
 import Login from "./Login";
 import Register from "./Register";
 import InfoTooltip from "./InfoTooltip";
@@ -32,6 +31,7 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
 
   const [selectedCard, setSelectedCard] = useState(null);
+  const [cardToDeleteId, setCardToDeleteId] = useState(null);
 
   const [currentUser, setCurrentUser] = useState();
   const [cards, setCards] = useState(null);
@@ -104,14 +104,16 @@ function App() {
       })
       .catch((err) => console.log(err));
   };
-  const handleCardDelete = (card) => () => {
+  const handleCardDelete = (cardId) => () => {
     api
-      .deleteCard(card._id)
-      .then(() =>
-        setCards((prevState) => prevState.filter((c) => c._id !== card._id))
-      )
+      .deleteCard(cardId)
+      .then(() => {
+        setCards((prevState) => prevState.filter((c) => c._id !== cardId));
+        setCardToDeleteId(null);
+      })
       .catch((err) => console.log(err));
   };
+  const handleDeleteCardClick = (cardId) => () => setCardToDeleteId(cardId);
 
   const handleEditProfileClick = () => setIsEditProfilePopupOpen(true);
   const handleAddPlaceClick = () => setIsAddPlacePopupOpen(true);
@@ -122,6 +124,7 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setSelectedCard(null);
+    setCardToDeleteId(null);
   };
 
   const handleCardClick = (card) => () => {
@@ -170,7 +173,7 @@ function App() {
           <Main
             cards={cards}
             onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
+            onCardDeleteClick={handleDeleteCardClick}
             selectedCard={selectedCard}
             isLoading={isLoading}
             onEditProfileClick={handleEditProfileClick}
@@ -194,16 +197,11 @@ function App() {
         onAddPlaceSubmit={handleAddPlaceSubmit}
       />
       {/* Попап подтверждения удаления */}
-      <PopupWithForm
-        name={Popup.SUBMIT_DELETION}
-        title="Вы уверены?"
-        isOpen={selectedCard}
+      <SubmitDeletionPopup
+        isOpen={cardToDeleteId}
+        onSubmit={handleCardDelete(cardToDeleteId)}
         onClose={closeAllPopups}
-      >
-        <button className="popup__form-submit popup__form-submit_action_deletion button">
-          Да
-        </button>
-      </PopupWithForm>
+      />
 
       {/* Попап изменения аватара */}
       <EditAvatarPopup

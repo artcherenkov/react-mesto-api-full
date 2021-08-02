@@ -7,11 +7,14 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 require('dotenv').config();
 
-const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { errorLogger } = require('./middlewares/logger');
 const cors = require('./middlewares/cors');
 const error = require('./middlewares/error');
 const router = require('./routes');
 const NotFoundError = require('./errors/not-found');
+const UnauthorizedError = require('./errors/unauthorized');
+
+const auth = require('./middlewares/auth');
 
 const PORT = process.env.PORT || 3000;
 
@@ -30,14 +33,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(limiter);
 app.use(helmet());
-app.use(requestLogger); // подключаем логгер запросов
 app.use(cors);
 
 app.use('/', router);
 
 app.use(errorLogger);
 
-app.use(() => {
+app.use(auth, (req) => {
+  if (!req.user) {
+    throw new UnauthorizedError('Необходима авторизация');
+  }
   throw new NotFoundError('Ресурс не найден');
 });
 
